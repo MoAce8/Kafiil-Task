@@ -38,7 +38,7 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboard,
       onChanged: onChanged,
       maxLines: maxLines,
-      style: const TextStyle(fontSize: 16),
+      // style: const TextStyle(fontSize: 16),
       decoration: InputDecoration(
           focusedErrorBorder: buildBorder(),
           contentPadding: const EdgeInsets.all(16),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kafiil_test/helper/constants.dart';
+import 'package:kafiil_test/screens/register/complete_data/complete_data_screen.dart';
 import 'package:kafiil_test/screens/register/signup/signup_screen.dart';
-import 'package:kafiil_test/screens/register/widgets/screen_indicator.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({super.key});
@@ -13,16 +13,13 @@ class RegisterPages extends StatefulWidget {
 class _RegisterPagesState extends State<RegisterPages> {
   PageController pageController = PageController();
   int currentIndex = 0;
-  bool firstScreen = true;
 
   void goToNextScreen() {
     setState(() {
       currentIndex++;
       pageController.jumpToPage(currentIndex);
-      firstScreen = false;
       if (currentIndex > 1) {
         currentIndex = 0;
-        firstScreen = true;
         pageController
             .jumpToPage(currentIndex); // Reset index after the last screen
       }
@@ -58,13 +55,13 @@ class _RegisterPagesState extends State<RegisterPages> {
         ),
         child: Column(
           children: [
-            ScreenIndicator(firstScreen: firstScreen),
             Expanded(
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: pageController,
                 children: [
-                  SignupScreen(),
+                  SignupScreen(function: goToNextScreen,),
+                  CompleteDataScreen(function: goToNextScreen,),
                 ],
               ),
             ),

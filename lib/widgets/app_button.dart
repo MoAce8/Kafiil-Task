@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
           backgroundColor: background,
           padding: const EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
         onPressed: function,
