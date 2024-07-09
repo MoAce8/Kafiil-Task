@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
+import 'package:kafiil_test/screens/register/widgets/error_message.dart';
 import 'package:kafiil_test/screens/register/widgets/screen_indicator.dart';
 import 'package:kafiil_test/widgets/app_button.dart';
 import 'package:kafiil_test/widgets/custom_radio.dart';
@@ -18,6 +19,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   bool passwordVisible = true;
   bool confPasswordVisible = true;
+  bool visible = false;
 
   List userType = [
     'Seller',
@@ -33,6 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ErrorMessage(visible: visible),
+            SizedBox(height: screenHeight(context)*.03,),
             const ScreenIndicator(firstScreen: true),
             SizedBox(
               height: screenHeight(context) * .05,
@@ -200,7 +204,15 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: AppButton(text: 'Next', function: widget.function),
+                  child: AppButton(text: 'Next', function: () {
+                    if (!visible) {
+                      widget.function;
+                    }else{
+                      setState(() {
+                        visible = true;
+                      });
+                    }
+                  },),
                 ),
               ],
             )
