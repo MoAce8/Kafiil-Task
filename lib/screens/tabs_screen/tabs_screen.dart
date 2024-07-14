@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kafiil_test/screens/countries/countries_screen.dart';
+import 'package:kafiil_test/screens/services/services_screen.dart';
 import 'package:kafiil_test/screens/tabs_screen/bottom_nav.dart';
 import 'package:kafiil_test/screens/who_am_i/who_am_i_screen.dart';
 
@@ -15,7 +16,7 @@ class _TabsScreenState extends State<TabsScreen> {
   List navScreens = [
     const WhoAmIScreen(),
     const CountriesScreen(),
-    const WhoAmIScreen(),
+    const ServicesScreen(),
   ];
 
   void selectScreen(int id) {

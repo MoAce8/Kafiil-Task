@@ -7,6 +7,7 @@ class AppColors{
   static const grey200 = Color(0xffe6e8ec);
   static const grey300 = Color(0xffC3C5C8);
   static const grey500 = Color(0xff696F79);
+  static const grey600 = Color(0xff828282);
   static const errorBack = Color(0xffFFF0ED);
   static const errorText = Color(0xffF56342);
   static const green100 = Color(0xffE9F9F1);
