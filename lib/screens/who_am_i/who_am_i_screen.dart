@@ -46,7 +46,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth(context) * .05,
-    ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,7 +56,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
                 children: [
                   CircleAvatar(
                     backgroundImage:
-                    const AssetImage('assets/images/whoAmI.png'),
+                        const AssetImage('assets/images/whoAmI.png'),
                     radius: screenWidth(context) * .11,
                   ),
                   Positioned(
@@ -356,7 +356,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             const IconCheckBox(img: 'twitter', name: 'Twitter'),
             const IconCheckBox(img: 'linked', name: 'LinkedIn'),
             SizedBox(
-              height: screenHeight(context)*.08,
+              height: screenHeight(context) * .08,
             )
           ],
         ),
