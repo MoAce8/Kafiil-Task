@@ -4,6 +4,7 @@ import 'package:kafiil_test/cubit/register_pages_cubit/register_cubit.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/screens/register/register_pages.dart';
+import 'package:kafiil_test/screens/tabs_screen/tabs_screen.dart';
 import 'package:kafiil_test/widgets/app_button.dart';
 import 'package:kafiil_test/widgets/custom_text_field.dart';
 
@@ -101,7 +102,13 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               AppButton(
                 text: 'Login',
-                function: () {},
+                function: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TabsScreen(),
+                      ));
+                },
               ),
               SizedBox(
                 height: screenHeight(context) * .02,

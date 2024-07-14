@@ -7,6 +7,7 @@ import 'package:kafiil_test/screens/register/widgets/screen_indicator.dart';
 import 'package:kafiil_test/widgets/app_button.dart';
 import 'package:kafiil_test/widgets/custom_radio.dart';
 import 'package:kafiil_test/widgets/custom_text_field.dart';
+import 'package:kafiil_test/widgets/icon_check_box.dart';
 
 class CompleteDataScreen extends StatefulWidget {
   const CompleteDataScreen({
@@ -34,20 +35,6 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
     'Grape',
     'Honeydew',
   ];
-
-  bool isSelected(String chip) {
-    return selectedChips.contains(chip);
-  }
-
-  void toggleChip(String chip) {
-    setState(() {
-      if (isSelected(chip)) {
-        selectedChips.remove(chip);
-      } else {
-        selectedChips.add(chip);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,9 +263,9 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
           SizedBox(
             height: screenHeight(context) * .006,
           ),
-          buildCheckRow(img: 'facebook', name: 'Facebook'),
-          buildCheckRow(img: 'twitter', name: 'Twitter'),
-          buildCheckRow(img: 'linked', name: 'LinkedIn'),
+          const IconCheckBox(img: 'facebook', name: 'Facebook'),
+          const IconCheckBox(img: 'twitter', name: 'Twitter'),
+          const IconCheckBox(img: 'linked', name: 'LinkedIn'),
           SizedBox(
             height: screenHeight(context) * .025,
           ),
@@ -294,31 +281,5 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
     );
   }
 
-  Row buildCheckRow({required String img, required String name}) {
-    return Row(
-      children: [
-        Checkbox(
-          activeColor: AppColors.primaryGreen,
-          value: true,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          onChanged: (value) {},
-        ),
-        Image.asset(
-          'assets/images/$img.png',
-          width: screenWidth(context) * .052,
-        ),
-        SizedBox(
-          width: screenWidth(context) * .02,
-        ),
-        Text(
-          name,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.grey500,
-          ),
-        ),
-      ],
-    );
-  }
+
 }
