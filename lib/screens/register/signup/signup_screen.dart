@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kafiil_test/cubit/register_pages_cubit/register_cubit.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/screens/register/widgets/error_message.dart';
 import 'package:kafiil_test/screens/register/widgets/screen_indicator.dart';
 import 'package:kafiil_test/widgets/app_button.dart';
 import 'package:kafiil_test/widgets/custom_radio.dart';
-import 'package:kafiil_test/widgets/custom_text_form_field.dart';
+import 'package:kafiil_test/widgets/custom_text_field.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key, required this.function});
-
-  final void Function() function;
+  const SignupScreen({
+    super.key,
+  });
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -36,7 +37,9 @@ class _SignupScreenState extends State<SignupScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ErrorMessage(visible: visible),
-            SizedBox(height: screenHeight(context)*.03,),
+            SizedBox(
+              height: screenHeight(context) * .03,
+            ),
             const ScreenIndicator(firstScreen: true),
             SizedBox(
               height: screenHeight(context) * .05,
@@ -46,40 +49,14 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'First Name',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.grey500),
-                      ),
-                      SizedBox(
-                        height: screenHeight(context) * .006,
-                      ),
-                      const AppTextFormField(),
-                    ],
+                  child: const AppTextField(
+                    title: 'First Name',
                   ),
                 ),
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Last Name',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.grey500),
-                      ),
-                      SizedBox(
-                        height: screenHeight(context) * .006,
-                      ),
-                      const AppTextFormField(),
-                    ],
+                  child: const AppTextField(
+                    title: 'Last Name',
                   ),
                 ),
               ],
@@ -87,31 +64,14 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const Text(
-              'Email Address',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.grey500),
+            const AppTextField(
+              title: 'Email Address',
             ),
-            SizedBox(
-              height: screenHeight(context) * .006,
-            ),
-            const AppTextFormField(),
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const Text(
-              'Password',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.grey500),
-            ),
-            SizedBox(
-              height: screenHeight(context) * .006,
-            ),
-            AppTextFormField(
+            AppTextField(
+              title: 'Password',
               suffix: IconButton(
                 icon: Icon(
                   passwordVisible
@@ -128,17 +88,8 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const Text(
-              'Confirm Password',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.grey500),
-            ),
-            SizedBox(
-              height: screenHeight(context) * .006,
-            ),
-            AppTextFormField(
+            AppTextField(
+              title: 'Confirm Password',
               suffix: IconButton(
                 icon: Icon(
                   confPasswordVisible
@@ -204,15 +155,12 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: AppButton(text: 'Next', function: () {
-                    if (!visible) {
-                      widget.function;
-                    }else{
-                      setState(() {
-                        visible = true;
-                      });
-                    }
-                  },),
+                  child: AppButton(
+                    text: 'Next',
+                    function: () {
+                      RegisterCubit.get(context).goToNextScreen();
+                    },
+                  ),
                 ),
               ],
             )

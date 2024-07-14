@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kafiil_test/cubit/register_pages_cubit/register_cubit.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/screens/register/complete_data/complete_data_screen.dart';
 import 'package:kafiil_test/screens/register/signup/signup_screen.dart';
@@ -11,20 +12,8 @@ class RegisterPages extends StatefulWidget {
 }
 
 class _RegisterPagesState extends State<RegisterPages> {
-  PageController pageController = PageController();
-  int currentIndex = 0;
 
-  void goToNextScreen() {
-    setState(() {
-      currentIndex++;
-      pageController.jumpToPage(currentIndex);
-      if (currentIndex > 1) {
-        currentIndex = 0;
-        pageController
-            .jumpToPage(currentIndex); // Reset index after the last screen
-      }
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +46,11 @@ class _RegisterPagesState extends State<RegisterPages> {
           children: [
             Expanded(
               child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: [
-                  SignupScreen(function: goToNextScreen,),
-                  CompleteDataScreen(function: goToNextScreen,),
+                physics:  const NeverScrollableScrollPhysics(),
+                controller: RegisterCubit.get(context).pageController,
+                children: const [
+                  SignupScreen(),
+                  CompleteDataScreen(),
                 ],
               ),
             ),
