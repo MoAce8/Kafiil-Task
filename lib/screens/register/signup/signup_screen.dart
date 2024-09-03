@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kafiil_test/cubit/register_pages_cubit/register_cubit.dart';
+import 'package:kafiil_test/cubit/user_data_cubit/user_data_cubit.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/screens/register/widgets/error_message.dart';
@@ -21,6 +22,12 @@ class _SignupScreenState extends State<SignupScreen> {
   bool passwordVisible = true;
   bool confPasswordVisible = true;
   bool visible = false;
+
+  TextEditingController fName = TextEditingController();
+  TextEditingController lName = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confPassword = TextEditingController();
 
   List userType = [
     'Seller',
@@ -49,14 +56,16 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: const AppTextField(
+                  child: AppTextField(
                     title: 'First Name',
+                    controller: fName,
                   ),
                 ),
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: const AppTextField(
+                  child: AppTextField(
                     title: 'Last Name',
+                    controller: lName,
                   ),
                 ),
               ],
@@ -64,14 +73,16 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const AppTextField(
+            AppTextField(
               title: 'Email Address',
+              controller: email,
             ),
             SizedBox(
               height: screenHeight(context) * .015,
             ),
             AppTextField(
               title: 'Password',
+              controller: password,
               suffix: IconButton(
                 icon: Icon(
                   passwordVisible
@@ -90,6 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             AppTextField(
               title: 'Confirm Password',
+              controller: confPassword,
               suffix: IconButton(
                 icon: Icon(
                   confPasswordVisible
@@ -158,7 +170,34 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: AppButton(
                     text: 'Next',
                     function: () {
-                      RegisterCubit.get(context).goToNextScreen();
+                      if (fName.text
+                          .trim()
+                          .isNotEmpty &&
+                          lName.text
+                              .trim()
+                              .isNotEmpty &&
+                          email.text
+                              .trim()
+                              .isNotEmpty &&
+                          password.text
+                              .trim()
+                              .isNotEmpty &&
+                          password.text == confPassword.text &&
+                          groupVal.isNotEmpty) {
+                        UserDataCubit.get(context).updateData(
+                          firstName: fName.text,
+                          lastName: lName.text,
+                          email: email.text,
+                          password: password.text,
+                          userType: groupVal,
+                        );
+                        print(UserDataCubit.get(context).user.firstName);
+                        RegisterCubit.get(context).goToNextScreen();
+                      } else {
+                        setState(() {
+                          visible = true;
+                        });
+                      }
                     },
                   ),
                 ),

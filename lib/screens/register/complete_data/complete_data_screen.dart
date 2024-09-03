@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kafiil_test/cubit/register_pages_cubit/register_cubit.dart';
+import 'package:kafiil_test/cubit/user_data_cubit/user_data_cubit.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/helper/date_time.dart';
+import 'package:kafiil_test/helper/image_picker.dart';
 import 'package:kafiil_test/screens/register/widgets/screen_indicator.dart';
+import 'package:kafiil_test/screens/tabs_screen/tabs_screen.dart';
 import 'package:kafiil_test/widgets/app_button.dart';
 import 'package:kafiil_test/widgets/custom_radio.dart';
 import 'package:kafiil_test/widgets/custom_text_field.dart';
@@ -20,21 +25,26 @@ class CompleteDataScreen extends StatefulWidget {
 
 class _CompleteDataScreenState extends State<CompleteDataScreen> {
   // DateTime? pickedDate;
-  TextEditingController pickedDate = TextEditingController();
   String groupVal = '';
+  String img = '';
+  List<String> skills = [];
+  List<String> favMedia = [];
+  int salary = 1000;
+  bool facebook = false;
+  bool twitter = false;
+  bool linkedIn = false;
 
-  List<String> selectedChips = [];
+  TextEditingController about = TextEditingController();
+  TextEditingController salaryCont = TextEditingController();
+  TextEditingController bDate = TextEditingController();
+  TextEditingController gender = TextEditingController();
+  TextEditingController skillCont = TextEditingController();
 
-  List<String> allChips = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grape',
-    'Honeydew',
-  ];
+  @override
+  void initState() {
+    salaryCont.text = 'SAR $salary';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,40 +60,54 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
             height: screenHeight(context) * .05,
           ),
           Center(
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CircleAvatar(
-                  backgroundImage:
-                      const AssetImage('assets/images/complete.png'),
-                  radius: screenWidth(context) * .11,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 1,
-                  child: GestureDetector(
-                    child: Container(
-                      width: screenWidth(context) * .061,
-                      height: screenWidth(context) * .061,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryGreen),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 18,
+            child: GestureDetector(
+              onTap: () async {
+                String temp = await pickFromGallery();
+                setState(() {
+                  img = temp;
+                });
+              },
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  img.isEmpty
+                      ? CircleAvatar(
+                          backgroundImage:
+                              const AssetImage('assets/images/complete.png'),
+                          radius: screenWidth(context) * .11,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: FileImage(File(img)),
+                          radius: screenWidth(context) * .11,
+                        ),
+                  Positioned(
+                    bottom: 0,
+                    right: 1,
+                    child: GestureDetector(
+                      child: Container(
+                        width: screenWidth(context) * .061,
+                        height: screenWidth(context) * .061,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primaryGreen),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SizedBox(
             height: screenHeight(context) * .015,
           ),
-          const AppTextField(
+          AppTextField(
             title: 'About',
+            controller: about,
             maxLines: 3,
           ),
           SizedBox(
@@ -91,6 +115,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
           ),
           AppTextField(
             title: 'Salary',
+            controller: salaryCont,
             readOnly: true,
             textCenter: true,
             prefix: Row(
@@ -99,16 +124,24 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
                 SizedBox(
                   width: screenWidth(context) * .1,
                 ),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  height: screenWidth(context) * .06,
-                  width: screenWidth(context) * .06,
-                  child: const Icon(
-                    Icons.remove,
-                    color: AppColors.primaryGreen,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      salary -= 500;
+                      salaryCont.text = 'SAR $salary';
+                    });
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    height: screenWidth(context) * .06,
+                    width: screenWidth(context) * .06,
+                    child: const Icon(
+                      Icons.remove,
+                      color: AppColors.primaryGreen,
+                    ),
                   ),
                 ),
               ],
@@ -116,16 +149,24 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
             suffix: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  height: screenWidth(context) * .06,
-                  width: screenWidth(context) * .06,
-                  child: const Icon(
-                    Icons.add,
-                    color: AppColors.primaryGreen,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      salary += 500;
+                      salaryCont.text = 'SAR $salary';
+                    });
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    height: screenWidth(context) * .06,
+                    width: screenWidth(context) * .06,
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.primaryGreen,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -139,7 +180,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
           ),
           AppTextField(
             title: 'Birth Date',
-            controller: pickedDate,
+            controller: bDate,
             readOnly: true,
             suffix: const Icon(Icons.date_range_rounded),
             onTap: () async {
@@ -151,7 +192,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
                 lastDate: now,
               );
               setState(() {
-                pickedDate.text = DateTimeFormatting.dateFormatter(newDate!);
+                bDate.text = DateTimeFormatting.dateFormatter(newDate!);
               });
             },
           ),
@@ -213,7 +254,7 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
               children: [
                 Wrap(
                   spacing: 6,
-                  children: allChips.map((chip) {
+                  children: skills.map((chip) {
                     return Chip(
                       label: Text(
                         chip,
@@ -234,16 +275,18 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       onDeleted: () {
                         setState(() {
-                          allChips.remove(chip);
+                          skills.remove(chip);
                         });
                       },
                     );
                   }).toList(),
                 ),
                 AppTextField(
-                  onSubmitted: (p0) {
+                  controller: skillCont,
+                  onSubmitted: (skill) {
                     setState(() {
-                      allChips.add(p0);
+                      skills.add(skill);
+                      skillCont.clear();
                     });
                   },
                 )
@@ -263,15 +306,74 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
           SizedBox(
             height: screenHeight(context) * .006,
           ),
-          const IconCheckBox(img: 'facebook', name: 'Facebook'),
-          const IconCheckBox(img: 'twitter', name: 'Twitter'),
-          const IconCheckBox(img: 'linked', name: 'LinkedIn'),
+          IconCheckBox(
+            img: 'facebook',
+            name: 'Facebook',
+            value: facebook,
+            onChanged: (val) {
+              setState(() {
+                facebook = val!;
+                if (facebook) {
+                  favMedia.add('Facebook');
+                } else {
+                  favMedia.remove('Facebook');
+                }
+              });
+            },
+          ),
+          IconCheckBox(
+            img: 'twitter',
+            name: 'Twitter',
+            value: twitter,
+            onChanged: (val) {
+              setState(() {
+                twitter = val!;
+                print(UserDataCubit.get(context).user.firstName);
+                if (twitter) {
+                  favMedia.add('Twitter');
+                } else {
+                  favMedia.remove('Twitter');
+                }
+              });
+            },
+          ),
+          IconCheckBox(
+            img: 'linked',
+            name: 'LinkedIn',
+            value: linkedIn,
+            onChanged: (val) {
+              setState(() {
+                linkedIn = val!;
+                if (linkedIn) {
+                  favMedia.add('LinkedIn');
+                } else {
+                  favMedia.remove('LinkedIn');
+                }
+              });
+            },
+          ),
           SizedBox(
             height: screenHeight(context) * .025,
           ),
           AppButton(
             text: 'Submit',
-            function: () {},
+            function: () {
+              UserDataCubit.get(context).updateData(
+                about: about.text,
+                salary: salaryCont.text,
+                bDate: bDate.text,
+                gender: groupVal,
+                skills: skills,
+                favMedia: favMedia,
+              );
+              print(UserDataCubit.get(context).user.firstName);
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TabsScreen(),
+                  ));
+            },
           ),
           SizedBox(
             height: screenHeight(context) * .025,
@@ -280,6 +382,4 @@ class _CompleteDataScreenState extends State<CompleteDataScreen> {
       ),
     );
   }
-
-
 }

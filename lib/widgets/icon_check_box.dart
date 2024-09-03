@@ -3,9 +3,18 @@ import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 
 class IconCheckBox extends StatelessWidget {
-  const IconCheckBox({super.key,required this.img, required this.name});
+  const IconCheckBox({
+    super.key,
+    required this.img,
+    required this.name,
+    required this.value,
+    this.onChanged,
+  });
+
   final String img;
   final String name;
+  final bool value;
+  final void Function(bool?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +22,9 @@ class IconCheckBox extends StatelessWidget {
       children: [
         Checkbox(
           activeColor: AppColors.primaryGreen,
-          value: true,
+          value: value,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          onChanged: (value) {},
+          onChanged: onChanged,
         ),
         Image.asset(
           'assets/images/$img.png',

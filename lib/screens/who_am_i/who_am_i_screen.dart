@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kafiil_test/cubit/user_data_cubit/user_data_cubit.dart';
 import 'package:kafiil_test/helper/colors.dart';
 import 'package:kafiil_test/helper/constants.dart';
 import 'package:kafiil_test/helper/date_time.dart';
@@ -15,23 +16,47 @@ class WhoAmIScreen extends StatefulWidget {
 
 class _WhoAmIScreenState extends State<WhoAmIScreen> {
   bool passwordVisible = true;
-  String groupVal = '';
-  TextEditingController pickedDate = TextEditingController();
-  List<String> selectedChips = [];
+  String userType = '';
+  String gender = '';
+  List<String> skills = [];
+  List<String> favMedia = [];
+  int salary = 1000;
+  bool facebook = false;
+  bool twitter = false;
+  bool linkedIn = false;
 
-  List<String> allChips = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grape',
-    'Honeydew',
-  ];
+  TextEditingController fName = TextEditingController();
+  TextEditingController lName = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController about = TextEditingController();
+  TextEditingController salaryCont = TextEditingController();
+  TextEditingController bDate = TextEditingController();
+  TextEditingController skillsCont = TextEditingController();
+
+  @override
+  void initState() {
+    fName.text = UserDataCubit.get(context).user.firstName!;
+    lName.text = UserDataCubit.get(context).user.lastName!;
+    email.text = UserDataCubit.get(context).user.email!;
+    password.text = UserDataCubit.get(context).user.password!;
+    about.text = UserDataCubit.get(context).user.about!;
+    salaryCont.text = UserDataCubit.get(context).user.salary!;
+    bDate.text = UserDataCubit.get(context).user.bDate!;
+    skills = UserDataCubit.get(context).user.skills!;
+    userType = UserDataCubit.get(context).user.userType!;
+    gender = UserDataCubit.get(context).user.gender!;
+    facebook = UserDataCubit.get(context).user.favMedia!.contains('Facebook');
+    twitter = UserDataCubit.get(context).user.favMedia!.contains('Twitter');
+    linkedIn = UserDataCubit.get(context).user.favMedia!.contains('LinkedIn');
+
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -88,14 +113,16 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
               children: [
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: const AppTextField(
+                  child: AppTextField(
                     title: 'First Name',
+                    controller: fName,
                   ),
                 ),
                 SizedBox(
                   width: screenWidth(context) * .44,
-                  child: const AppTextField(
+                  child:  AppTextField(
                     title: 'Last Name',
+                    controller: lName,
                   ),
                 ),
               ],
@@ -103,14 +130,16 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const AppTextField(
+             AppTextField(
               title: 'Email Address',
+               controller: email,
             ),
             SizedBox(
               height: screenHeight(context) * .015,
             ),
             AppTextField(
               title: 'Password',
+              controller: password,
               suffix: IconButton(
                 icon: Icon(
                   passwordVisible
@@ -140,29 +169,29 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             Row(
               children: [
                 AppRadio(
-                  groupValue: groupVal,
+                  groupValue: userType,
                   value: 'Seller',
                   onChanged: (val) {
                     setState(() {
-                      groupVal = val!;
+                      userType = val!;
                     });
                   },
                 ),
                 AppRadio(
-                  groupValue: groupVal,
+                  groupValue: userType,
                   value: 'Buyer',
                   onChanged: (val) {
                     setState(() {
-                      groupVal = val!;
+                      userType = val!;
                     });
                   },
                 ),
                 AppRadio(
-                  groupValue: groupVal,
+                  groupValue: userType,
                   value: 'Both',
                   onChanged: (val) {
                     setState(() {
-                      groupVal = val!;
+                      userType = val!;
                     });
                   },
                 ),
@@ -171,8 +200,9 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             SizedBox(
               height: screenHeight(context) * .015,
             ),
-            const AppTextField(
+             AppTextField(
               title: 'About',
+              controller: about,
               maxLines: 3,
             ),
             SizedBox(
@@ -180,6 +210,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             ),
             AppTextField(
               title: 'Salary',
+              controller: salaryCont,
               readOnly: true,
               textCenter: true,
               prefix: Row(
@@ -188,16 +219,24 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
                   SizedBox(
                     width: screenWidth(context) * .1,
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    height: screenWidth(context) * .06,
-                    width: screenWidth(context) * .06,
-                    child: const Icon(
-                      Icons.remove,
-                      color: AppColors.primaryGreen,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        salary -= 500;
+                        salaryCont.text = 'SAR $salary';
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      height: screenWidth(context) * .06,
+                      width: screenWidth(context) * .06,
+                      child: const Icon(
+                        Icons.remove,
+                        color: AppColors.primaryGreen,
+                      ),
                     ),
                   ),
                 ],
@@ -205,16 +244,24 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
               suffix: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    height: screenWidth(context) * .06,
-                    width: screenWidth(context) * .06,
-                    child: const Icon(
-                      Icons.add,
-                      color: AppColors.primaryGreen,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        salary += 500;
+                        salaryCont.text = 'SAR $salary';
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      height: screenWidth(context) * .06,
+                      width: screenWidth(context) * .06,
+                      child: const Icon(
+                        Icons.add,
+                        color: AppColors.primaryGreen,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -228,7 +275,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             ),
             AppTextField(
               title: 'Birth Date',
-              controller: pickedDate,
+              controller: bDate,
               readOnly: true,
               suffix: const Icon(Icons.date_range_rounded),
               onTap: () async {
@@ -240,7 +287,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
                   lastDate: now,
                 );
                 setState(() {
-                  pickedDate.text = DateTimeFormatting.dateFormatter(newDate!);
+                  bDate.text = DateTimeFormatting.dateFormatter(newDate!);
                 });
               },
             ),
@@ -260,20 +307,20 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             Row(
               children: [
                 AppRadio(
-                  groupValue: groupVal,
+                  groupValue: gender,
                   value: 'Male',
                   onChanged: (val) {
                     setState(() {
-                      groupVal = val!;
+                      userType = val!;
                     });
                   },
                 ),
                 AppRadio(
-                  groupValue: groupVal,
+                  groupValue: gender,
                   value: 'Female',
                   onChanged: (val) {
                     setState(() {
-                      groupVal = val!;
+                      userType = val!;
                     });
                   },
                 ),
@@ -302,7 +349,7 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
                 children: [
                   Wrap(
                     spacing: 6,
-                    children: allChips.map((chip) {
+                    children: skills.map((chip) {
                       return Chip(
                         label: Text(
                           chip,
@@ -323,16 +370,18 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
                             borderRadius: BorderRadius.circular(10)),
                         onDeleted: () {
                           setState(() {
-                            allChips.remove(chip);
+                            skills.remove(chip);
                           });
                         },
                       );
                     }).toList(),
                   ),
                   AppTextField(
+                    controller: skillsCont,
                     onSubmitted: (p0) {
                       setState(() {
-                        allChips.add(p0);
+                        skills.add(p0);
+                        skillsCont.clear();
                       });
                     },
                   )
@@ -352,9 +401,51 @@ class _WhoAmIScreenState extends State<WhoAmIScreen> {
             SizedBox(
               height: screenHeight(context) * .006,
             ),
-            const IconCheckBox(img: 'facebook', name: 'Facebook'),
-            const IconCheckBox(img: 'twitter', name: 'Twitter'),
-            const IconCheckBox(img: 'linked', name: 'LinkedIn'),
+            IconCheckBox(
+              img: 'facebook',
+              name: 'Facebook',
+              value: facebook,
+              onChanged: (val) {
+                setState(() {
+                  facebook = val!;
+                  if (facebook) {
+                    favMedia.add('Facebook');
+                  } else {
+                    favMedia.remove('Facebook');
+                  }
+                });
+              },
+            ),
+            IconCheckBox(
+              img: 'twitter',
+              name: 'Twitter',
+              value: twitter,
+              onChanged: (val) {
+                setState(() {
+                  twitter = val!;
+                  if (twitter) {
+                    favMedia.add('Twitter');
+                  } else {
+                    favMedia.remove('Twitter');
+                  }
+                });
+              },
+            ),
+            IconCheckBox(
+              img: 'linked',
+              name: 'LinkedIn',
+              value: linkedIn,
+              onChanged: (val) {
+                setState(() {
+                  linkedIn = val!;
+                  if (linkedIn) {
+                    favMedia.add('LinkedIn');
+                  } else {
+                    favMedia.remove('LinkedIn');
+                  }
+                });
+              },
+            ),
             SizedBox(
               height: screenHeight(context) * .08,
             )
